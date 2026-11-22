@@ -1,8 +1,29 @@
 import express from "express";
 import { apiRouter } from "./routes.js";
+import { pinoHttp } from "pino-http";
+import { logger } from "./lib/logger.js";
+import { randomUUID } from "node:crypto";
 
 export const app = express();
 
-app.use(apiRouter);
-
 app.use(express.json());
+
+app.use(
+    pinoHttp({
+        logger,
+        genReqId: (req, res) => {
+            const id = (req.headers["x-request-id"] as string) ?? randomUUID();
+            res.setHeader("x-request-id", id);
+            return id;
+        },
+        customLogLevel: (_req, res, err) =>
+            err || res.statusCode >= 500
+                ? "error"
+                : res.statusCode >= 400
+                  ? "warn"
+                  : "info",
+        autoLogging: { ignore: (req) => req.url === "/health" },
+    }),
+);
+
+app.use(apiRouter);

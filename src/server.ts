@@ -1,5 +1,6 @@
 import { app } from "./app.js";
+import { logger } from "./lib/logger.js";
 
 app.listen(3000, () => {
-    console.log("Server is running");
+    logger.info("Server is running");
 });
