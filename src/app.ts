@@ -3,6 +3,9 @@ import { apiRouter } from "./routes.js";
 import { pinoHttp } from "pino-http";
 import { logger } from "./lib/logger.js";
 import { randomUUID } from "node:crypto";
+import helmet from "helmet";
+import { env } from "./config/env.js";
+import cors from "cors";
 
 export const app = express();
 
@@ -26,4 +29,12 @@ app.use(
     }),
 );
 
+// Helmet
+
+app.use(helmet());
+app.use(cors({ origin: env.CORS_ORIGIN }));
+
+app.use(express.json({ limit: "100kb" }));
 app.use(apiRouter);
+app.use(notFound);
+app.use(errorHandler);
