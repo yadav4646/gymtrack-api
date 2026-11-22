@@ -26,7 +26,7 @@ const options: LoggerOptions = {
 
 if (!isProd) {
     options.transport = {
-        target: "pino-preety",
+        target: "pino-pretty",
 
         options: {
             colorize: true,
