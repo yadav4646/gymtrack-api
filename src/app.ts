@@ -6,10 +6,10 @@ import { randomUUID } from "node:crypto";
 import helmet from "helmet";
 import { env } from "./config/env.js";
 import cors from "cors";
+import { notFound } from "./middleware/notFound.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 export const app = express();
-
-app.use(express.json());
 
 app.use(
     pinoHttp({
