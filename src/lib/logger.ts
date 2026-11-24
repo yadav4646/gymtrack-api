@@ -1,4 +1,5 @@
 import pino, { type LoggerOptions } from "pino";
+
 import { env } from "../config/env.js";
 
 const isProd = env.NODE_ENV === "production";
@@ -27,7 +28,6 @@ const options: LoggerOptions = {
 if (!isProd) {
     options.transport = {
         target: "pino-pretty",
-
         options: {
             colorize: true,
             translateTime: "SYS:HH:MM:ss",
